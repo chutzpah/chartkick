@@ -479,7 +479,7 @@
         // Set chart options
         var defaultOptions = {
           chartArea: {},
-          fontName: "'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif",
+          // fontName: "'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif",
           pointSize: 6,
           legend: {
             textStyle: {
@@ -693,6 +693,22 @@
           });
         };
 
+        this.renderSteppedAreaChart = function (chart) {
+          waitForLoaded(function () {
+            var chartOptions = {
+              isStacked: true,
+              pointSize: 0,
+              areaOpacity: 0.5
+            };
+            var options = jsOptions(chart.data, chart.options, chartOptions);
+            var data = createDataTable(chart.data, chart.options.discrete ? "string" : "string");
+            chart.chart = new google.visualization.SteppedAreaChart(chart.element);
+            resize(function () {
+              chart.chart.draw(data, options);
+            });
+          });
+        };
+
         this.renderGeoChart = function (chart) {
           waitForLoaded(function () {
             var chartOptions = {
@@ -873,6 +889,11 @@
     renderChart("AreaChart", chart);
   }
 
+  function processSteppedAreaData(chart) {
+    chart.data = processSeries(chart.data, chart.options, "string");
+    renderChart("SteppedAreaChart", chart);
+  }
+
   function processGeoData(chart) {
     chart.data = processSimple(chart.data);
     renderChart("GeoChart", chart);
@@ -916,6 +937,9 @@
     },
     AreaChart: function (element, dataSource, opts) {
       setElement(this, element, dataSource, opts, processAreaData);
+    },
+    SteppedAreaChart: function (element, dataSource, opts) {
+      setElement(this, element, dataSource, opts, processSteppedAreaData);
     },
     GeoChart: function (element, dataSource, opts) {
       setElement(this, element, dataSource, opts, processGeoData);

@@ -23,6 +23,10 @@ module Chartkick
       chartkick_chart "AreaChart", data_source, options
     end
 
+    def stepped_area_chart(data_source, options = {})
+      chartkick_chart "SteppedAreaChart", data_source, options
+    end
+
     def scatter_chart(data_source, options = {})
       chartkick_chart "ScatterChart", data_source, options
     end
